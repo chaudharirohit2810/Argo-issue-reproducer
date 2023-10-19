@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: incident-reproduce-
+  labels:
+    workflows.argoproj.io/archive-strategy: "false"
+  namespace: argo
+spec:
+  entrypoint: incident-reproduce
+  templates:
+  - name: incident-reproduce
+    steps:
+    - - name: incident-reproduce-step-1
+        templateRef:
+          name: incident-issue-reproduce-wftemplate
+          template: incident-issue-reproduce-wftemplate-main
+      - name: incident-reproduce-step-2
+        templateRef:
+          name: incident-issue-reproduce-wftemplate
+          template: incident-issue-reproduce-wftemplate-main
+      - name: incident-reproduce-step-3
+        templateRef:
+          name: incident-issue-reproduce-wftemplate
+          template: incident-issue-reproduce-wftemplate-main
+      - name: incident-reproduce-step-4
+        templateRef:
+          name: incident-issue-reproduce-wftemplate
+          template: incident-issue-reproduce-wftemplate-main
