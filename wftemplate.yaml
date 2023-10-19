@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  labels:
+    app.kubernetes.io/name: incident-issue-reproduce-wftemplate
+  name: incident-issue-reproduce-wftemplate
+  namespace: argo
+spec:
+  templates:
+  - name: incident-issue-reproduce-wftemplate-main
+    steps:
+    - - name: processing
+        template: processingdatapipelinewinstran
+  - name: processingdatapipelinewinstran
+    synchronization:
+      semaphore:
+        configMapKeyRef:
+          key: reproduce.wf.template
+          name: incident-reproduce-configmap
+    container:
+      image: docker/whalesay:latest
+      command: ["sleep","30"]
+  ttlStrategy:
+    secondsAfterCompletion: 300
+    secondsAfterFailure: 600
+    secondsAfterSuccess: 300
